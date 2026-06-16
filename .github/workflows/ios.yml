@@ -26,16 +26,22 @@ jobs:
       - name: Generate Xcode project
         run: xcodegen generate
 
+      - name: List targets/schemes (diagnostic)
+        run: xcodebuild -list -project Spindle999.xcodeproj
+
       - name: Build (unsigned)
         run: |
           set -eo pipefail
+          # -target (not -scheme): XcodeGen doesn't emit a shared scheme by
+          # default, and CI never opens Xcode to auto-generate one.
           xcodebuild \
             -project Spindle999.xcodeproj \
-            -scheme Spindle999 \
+            -target Spindle999 \
             -configuration Release \
             -sdk iphoneos \
             -derivedDataPath build \
-            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" DEVELOPMENT_TEAM="" \
             clean build
 
       - name: Package .ipa
