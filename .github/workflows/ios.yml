@@ -34,11 +34,11 @@ jobs:
       - name: Build (unsigned)
         run: |
           set -eo pipefail
-          # -target (not -scheme): XcodeGen doesn't emit a shared scheme by
-          # default, and CI never opens Xcode to auto-generate one.
+          # XcodeGen DOES emit a shared "Spindle999" scheme (confirmed by
+          # -list); -scheme is required when -derivedDataPath is used.
           xcodebuild \
             -project Spindle999.xcodeproj \
-            -target Spindle999 \
+            -scheme Spindle999 \
             -configuration Release \
             -sdk iphoneos \
             -derivedDataPath build \
