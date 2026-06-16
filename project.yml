@@ -1,0 +1,44 @@
+# XcodeGen project definition.
+# Generates Spindle999.xcodeproj from this file, so the project can be built
+# on a macOS CI runner without ever opening Xcode by hand on a Mac.
+#
+#   brew install xcodegen && xcodegen generate
+#
+name: Spindle999
+options:
+  bundleIdPrefix: com.aler14
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    SWIFT_VERSION: "5.9"
+    # Sideload-friendly: CI builds unsigned, AltStore/SideStore signs later.
+    CODE_SIGNING_ALLOWED: "NO"
+    CODE_SIGNING_REQUIRED: "NO"
+
+targets:
+  Spindle999:
+    type: application
+    platform: iOS
+    sources:
+      - path: Sources
+    info:
+      path: Sources/Info.plist
+      properties:
+        CFBundleDisplayName: Spindle999
+        CFBundleShortVersionString: "0.1.0"
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        # Permissions we'll need soon (declared early so the build is stable):
+        NSPhotoLibraryUsageDescription: "Per importare immagini e audio dalla tua galleria."
+        NSPhotoLibraryAddUsageDescription: "Per salvare i video creati nella galleria."
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.aler14.spindle999
+        TARGETED_DEVICE_FAMILY: "1"   # iPhone only for now
+        GENERATE_INFOPLIST_FILE: "NO"

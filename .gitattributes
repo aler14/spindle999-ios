@@ -1,0 +1,7 @@
+# Force LF on text files. The CI runs bash on macOS, where CRLF line endings
+# in the workflow's `run:` blocks would break commands with stray \r.
+* text=auto eol=lf
+*.swift text eol=lf
+*.yml   text eol=lf
+*.plist text eol=lf
+*.md    text eol=lf
